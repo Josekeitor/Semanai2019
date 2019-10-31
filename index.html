@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang ="en">
+    <head>
+        <meta charset = "UTF-8">
+        <title>Aaron</title>
+        <link href="style.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+        <script src="jquery-3.4.1.min.js"></script>
+        <meta name="viewport" content='width=device-width,initial-scale=1'>
+
+    </head>
+    <body>
+    <div class="logIn">
+        <img class="logo" src="imagenes/Logo.jpg">
+        <div id="main-text">Control de inventario</div>
+        <input type="email" id="username" placeholder="Usuario" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button id="ingresar">Ingresar</button>
+        <button id="registro">Registro</button>
+    </div>
+
+    <div id="pag-registro" class="hide">
+      <button id="regresar"> regreso</button>
+       <img class="logo" src="imagenes/Logo.jpg">
+       <div id="main-text">Registro</div>
+
+        <input id="nombre" placeholder="Nombre" required>
+        <input id="apellidos" placeholder="Apellidos" required>
+        <input type="email" id="email" placeholder="Correo electrónico" required>
+        <input type="password" id="pass" placeholder="Contraseña" required>
+        <button id="registrar">Registrar</button>
+
+    </div>
+
+    <div class="categorias hide" id="medicamentos">
+       <header>
+           <img class="logoHeader" src="imagenes/LogoHeader.png">
+            <div class="selected med-tab">Medicamentos</div>
+            <div class="insumos-tab">Insumos</div>
+            <img class="profile" src="imagenes/profile.png">
+        </header>
+
+        <div class="bubbleLayout">
+
+        </div>
+    </div>
+
+    <div class="categorias hide" id="insumos">
+       <header>
+          <img class="logoHeader" src="imagenes/LogoHeader.png">
+          <div class="med-tab">Medicamentos</div>
+          <div class="insumos-tab selected">Insumos</div>
+          <img class="profile" src="imagenes/profile.png">
+        </header>
+        <div class="bubbleLayout">
+            <div class="line">
+                <txt class="categoria">Insumo</txt>
+                <txt class="tipo">Nombre</txt>
+                <txt class="subtipo">Subtipo</txt>
+                <txt class="cantidad">Hola</txt>
+            </div>
+
+        </div>
+    </div>
+
+        <div class="profile-view categorias hide">
+             <header>
+               <img class="logoHeader" src="imagenes/LogoHeader.png">
+               <div class="med-tab">Medicamentos</div>
+               <div class="insumos-tab">Insumos</div>
+            </header>
+
+            <div class="profile-stack">
+               <img id="profile-pic" src="imagenes/profile-black.png">
+                <txt>Nombre:</txt>
+
+            </div>
+    </div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBj4xnMtV9JatGmb5paDYqrFEc-hSApSYc",
+    authDomain: "semana-i-cac89.firebaseapp.com",
+    databaseURL: "https://semana-i-cac89.firebaseio.com",
+    projectId: "semana-i-cac89",
+    storageBucket: "semana-i-cac89.appspot.com",
+    messagingSenderId: "388703357169",
+    appId: "1:388703357169:web:8e83dde0ea5de8f0450150"
+  };
+  // Initialize Firebase
+  var app = firebase.initializeApp(firebaseConfig);
+    var firestore = firebase.firestore(app)
+
+</script>
+
+
+ <!--
+        <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCdtmmzAxVrbgDT_n3S21QX3eYDw30urI4",
+    authDomain: "restoswiftui.firebaseapp.com",
+    databaseURL: "https://restoswiftui.firebaseio.com",
+    projectId: "restoswiftui",
+    storageBucket: "restoswiftui.appspot.com",
+    messagingSenderId: "860569321146",
+    appId: "1:860569321146:web:216cbfd4c49992ba79cc83",
+    measurementId: "G-4NBW2X3NCR"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+firebase.auth();
+</script>
+-->
+ <script>
+      firebase.auth().onAuthStateChanged(function(user){
+  if (user) {
+    // User is signed in.
+      $(".logIn").removeClass("show");
+            $(".logIn").addClass("hide");
+            $("#medicamentos").removeClass("hide");
+            $("#medicamentos").addClass("show");
+  } else {
+    // No user is signed in.
+       $("#registro").on('click',function(){
+               $("#pag-registro").removeClass("hide");
+               $("#pag-registro").addClass("show");
+               $(".logIn").removeClass("show");
+               $(".logIn").addClass("hide");
+           });
+
+           $("#regresar").on('click',function(){
+                $("#pag-registro").removeClass("show");
+               $("#pag-registro").addClass("hide");
+               $(".logIn").removeClass("hide");
+               $(".logIn").addClass("show");
+           });
+
+        $("#ingresar").on('click',function(){
+            var email = $("#username").val();
+            var password = $("#password").val();
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
+                $(".logIn").removeClass("show");
+            $(".logIn").addClass("hide");
+            $("#medicamentos").removeClass("hide");
+            $("#medicamentos").addClass("show");
+            });
+
+
+
+        });
+
+           $("#registrar").on('click',function(){
+
+               var email = $("#email").val();
+               var password = $("#pass").val();
+               var userAuth;
+               firebase.auth().createUserWithEmailAndPassword(email, password);
+               userAuth = firebase.auth().currentUser;
+               console.log(userAuth);
+               console.log(userAuth.uid);
+               console.log(userAuth.email);
+                var user = {name: $("#nombre").val(), lastName: $("#apellidos").val(),
+            email: email,
+        };
+                firestore.collection('usuarios').add(user).then(function(){
+                   $("#pag-registro").removeClass("show");
+                   $("#pag-registro").addClass("hide");
+                   $("#medicamentos").removeClass("hide");
+                   $("#medicamentos").addClass("show");
+                    });
+           });
+  }
+      });
+          $(".med-tab").on('click',function(){
+              $("#insumos").removeClass("show").addClass("hide");
+              $("#medicamentos").removeClass("hide").addClass("show");
+               $(".profile-view").removeClass("show").addClass("hide");
+          });
+     $(".insumos-tab").on('click',function(){
+              $("#insumos").removeClass("hide").addClass("show");
+              $("#medicamentos").removeClass("show").addClass("hide");
+              $(".profile-view").removeClass("show").addClass("hide");
+          });
+           $("#registro").on('click',function(){
+               $("#pag-registro").removeClass("hide");
+               $("#pag-registro").addClass("show");
+               $(".logIn").removeClass("show");
+               $(".logIn").addClass("hide");
+           });
+
+           $("#regresar").on('click',function(){
+                $("#pag-registro").removeClass("show");
+               $("#pag-registro").addClass("hide");
+               $(".logIn").removeClass("hide");
+               $(".logIn").addClass("show");
+           });
+
+        $("#ingresar").on('click',function(){
+            var email = $("#username").val();
+            var password = $("#password").val();
+            firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
+                $(".logIn").removeClass("show");
+            $(".logIn").addClass("hide");
+            $("#medicamentos").removeClass("hide");
+            $("#medicamentos").addClass("show");
+            });
+        });
+
+           $("#registrar").on('click',function(){
+
+               var email = $("#email").val();
+               var password = $("#pass").val();
+               console.log(email);
+               console.log(password);
+               console.log("hola");
+
+               firebase.auth().createUserWithEmailAndPassword(email,password).then(function(){
+                   $("#pag-registro").removeClass("show");
+                   $("#pag-registro").addClass("hide");
+                   $("#medicamentos").removeClass("hide");
+                   $("#medicamentos").addClass("show");
+               });
+
+           });
+      $(".categorias .profile").on('click', function(){
+        $("#medicamentos").removeClass("show").addClass("hide");
+          $("#insumos").removeClass("show").addClass("hide");
+          $(".profile-view ").removeClass("hide").addClass("show");
+      });
+
+
+     /**********
+     *     Recibir datos      *
+     **********/
+    var valRecibido = firebase.database().ref('/data/Lector');
+    valRecibido.on('value', function (snapshot) {
+        $('.line .categoria').text(snapshot.child("ID").val());
+        $('.line .subtipo').text(snapshot.child("bat").val());
+        $('.line .tipo').text(snapshot.child("lat").val());
+        $('.line .cantidad').text(snapshot.child("temp").val());
+    });
+
+     var valRecibido = firebase.database().ref('/data/Lector');
+    valRecibido.on('value', function (snapshot) {
+        var i=0;
+        while(snapshot.child(i)!= null && i<=3){
+            var valor = snapshot.child(i).child("cantidad").val();
+            var clinica = snapshot.child(i).child("clinica").val();
+            var nombre = snapshot.child(i).child("nombre").val();
+            var subtipo = snapshot.child(i).child("subtipo").val();
+
+            $(".line .cantidad").text(valor);
+
+            var dict = firestore.collection('diccionario');
+        dict.doc('clinica').get().then(function (doc) {
+            const data = Object.values(doc.data());
+
+            $(".line .categoria").text(data[clinica]);
+        });
+
+            dict.doc('nombre').get().then(function (doc) {
+            const data = Object.values(doc.data());
+
+            $(".line .tipo").text(data[nombre]);
+        });
+            dict.doc('subtipo').get().then(function (doc) {
+            const data = Object.values(doc.data());
+            $(".line .subtipo").text(data[subtipo]);
+        });
+            i+=1;
+        };
+
+    });
+
+
+
+</script>
+
+    </body>
+</html>

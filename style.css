@@ -1,0 +1,195 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*
+Style
+*/
+
+body{
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.logIn{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.logo{
+    width: 20vw;
+    padding-bottom: 3vh;
+    padding-top: 5vh;
+}
+button{
+    background-color: #0083CE;
+    border-radius: 25px;
+    width: 10vw;
+    border: none;
+    color: white;
+    padding: 1%;
+    margin-top: 3vh;
+}
+input{
+    border-radius: 25px;
+    border: solid 3px #0083CE;
+    padding: 1%;
+    margin-bottom: 2vh;
+}
+
+.hide{
+    display: none;
+}
+
+.show{
+    display: flex;
+}
+
+#main-text{
+    margin-bottom: 6vh;
+    font-weight: bold;
+}
+
+#pag-registro{
+    flex-flow: column;
+    align-items: center;
+}
+
+#pag-registro form{
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    align-items: center;
+}
+
+form input{
+    padding: 1vw;
+}
+
+#registrar{
+    padding: 1vw;
+    margin-top: 0;
+}
+
+#regresar{
+    position: absolute;
+    left: 2vw;
+    width: 3vw;
+}
+
+header{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100vw;
+    align-items: center;
+    background-color: #0083CE;
+}
+
+header div{
+    color: white;
+    padding-bottom: 1vh;
+}
+
+.logoHeader{
+    max-width: 4vw;
+    max-height: 13vh;
+    margin-left: -15VW;
+    filter: brightness(0) invert(1);
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+#medicamentos{
+    justify-content: space-evenly;
+    flex-flow: column wrap;
+}
+
+.bubbleLayout{
+    display: flex;
+    flex-flow: row wrap;
+}
+.bubble{
+}
+
+.selected{
+
+    border-bottom: 2px solid white;
+}
+
+.profile{
+    width: 3vw;
+    color: white;
+    margin-right: -13vw;
+}
+.categorias{
+    flex-wrap: wrap;
+}
+
+#profile-pic{
+    width: 20vw;
+    margin-bottom: 5vh;
+}
+
+.profile-view{
+    flex-flow: column;
+}
+.profile-stack{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3vh;
+}
+
+.line{
+    height: 10vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 50vw;
+}
