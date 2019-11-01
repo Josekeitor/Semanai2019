@@ -292,9 +292,9 @@ function populateDivs(mensaje,contador){
         var codigoClinica = parseInt(snapshot.child('clinica').val());
         var codigoSubtipo = parseInt(snapshot.child('subtipo').val());
         var codigoNombre = parseInt(snapshot.child('nombre').val());
-        var cantidad = snapshot.child('cantidad').val();
+        var cantidad = parseInt(snapshot.child('cantidad').val());
 
-        if (isNaN(codigoClinica)) {
+        if (isNaN(codigoClinica) || isNaN(codigoSubtipo) || isNaN(codigoNombre) || isNaN(cantidad)) {
             console.log('Mensaje Vacio')
         } else {
             console.log(codigoClinica);
