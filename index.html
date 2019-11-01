@@ -274,6 +274,8 @@ firebase.auth();
         $('.line .cantidad').text(snapshot.child("temp").val());
     });*/
 
+    var contador = 1;
+
     var mensaje1 = firebase.database().ref('/data/Lector/1');
     var mensaje2 = firebase.database().ref('/data/Lector/2');
     var mensaje3 = firebase.database().ref('/data/Lector/3');
@@ -296,40 +298,34 @@ firebase.auth();
             var clinica;
             var subtipo;
             var nombre;
-            $('.bubbleLayout').append('<div id="1" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
 
+            console.log('contador: ' + contador);
+
+            $('.bubbleLayout').append('<div id="'+contador+'" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
 
             dict.doc('clinica').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
-                $("#1 .clinica").text(clinica);
+                $("#"+(contador-1)+" .clinica").text(clinica);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
-                $("#1 .subtipo").text(subtipo);
+                $("#"+(contador-1)+" .subtipo").text(subtipo);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoNombre]);
                 nombre = data[codigoNombre];
-                $("#1 .nombre").text(nombre);
+                $("#"+(contador-1)+" .nombre").text(nombre);
             });
 
-            /*$('.bubbleLayout').append('
-                                        <div class="line">
-                                            <txt class="clinica">${clinica}</txt>
-                                            <txt class="subtipo">${subtipo}</txt>
-                                            <txt class="nombre">${nombre}</txt>
-                                            <txt class="cantidad">${cantidad}</txt>
-                                        </div>
-                                        ');*/
-
+            contador=contador+1;
         }
-
     });
+
     mensaje2.on('value', function (snapshot) {
         var codigoClinica = parseInt(snapshot.child('clinica').val());
         var codigoSubtipo = parseInt(snapshot.child('subtipo').val());
@@ -348,44 +344,33 @@ firebase.auth();
             var subtipo;
             var nombre;
 
-            $('.bubbleLayout').append('<div id="2" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
+            console.log('contador: ' + contador);
 
+            $('.bubbleLayout').append('<div id="'+contador+'" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
 
             dict.doc('clinica').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
-                $("#2 .clinica").text(clinica);
+                $("#"+(contador-1)+" .clinica").text(clinica);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
-                $("#2 .subtipo").text(subtipo);
+                $("#"+(contador-1)+" .subtipo").text(subtipo);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoNombre]);
                 nombre = data[codigoNombre];
-                console.log("nombre dentro: "+ nombre);
-                $("#2 .nombre").text(nombre);
-
+                $("#"+(contador-1)+" .nombre").text(nombre);
             });
 
-            /*$('.bubbleLayout').append('
-                                        <div class="line">
-                                            <txt class="clinica">${clinica}</txt>
-                                            <txt class="subtipo">${subtipo}</txt>
-                                            <txt class="nombre">${nombre}</txt>
-                                            <txt class="cantidad">${cantidad}</txt>
-                                        </div>
-                                        ');*/
-
-
-            console.log("nombre fuera: "+ nombre);
-        }
-
+            contador=contador+1;
+        }      
     });
+
     mensaje3.on('value', function (snapshot) {
         var codigoClinica = parseInt(snapshot.child('clinica').val());
         var codigoSubtipo = parseInt(snapshot.child('subtipo').val());
@@ -404,37 +389,31 @@ firebase.auth();
             var subtipo;
             var nombre;
 
-            $('.bubbleLayout').append('<div id="3" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
+            console.log('contador: ' + contador);
+
+            $('.bubbleLayout').append('<div id="'+contador+'" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
 
             dict.doc('clinica').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
-                $("#3 .clinica").text(clinica);
+                $("#"+(contador-1)+" .clinica").text(clinica);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
-                $("#3 .subtipo").text(subtipo);
+                $("#"+(contador-1)+" .subtipo").text(subtipo);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoNombre]);
                 nombre = data[codigoNombre];
-                $("#3 .nombre").text(nombre);
+                $("#"+(contador-1)+" .nombre").text(nombre);
             });
-
-            /*$('.bubbleLayout').append('
-                                        <div class="line">
-                                            <txt class="clinica">${clinica}</txt>
-                                            <txt class="subtipo">${subtipo}</txt>
-                                            <txt class="nombre">${nombre}</txt>
-                                            <txt class="cantidad">${cantidad}</txt>
-                                        </div>
-                                        ');*/
+            
+            contador=contador+1;
         }
-
     });
 
     /*var valRecibido = firebase.database().ref('/data/Lector');
