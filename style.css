@@ -153,11 +153,8 @@ header div{
     display: flex;
     flex-flow: row wrap;
 }
-.bubble{
-}
 
 .selected{
-
     border-bottom: 2px solid white;
 }
 
@@ -201,5 +198,8 @@ header div{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    width: 50vw;
+    width: 48vw;
+    border-radius: 25px;
+    border: solid 3px #0083CE;
+    margin: 1vh;
 }
