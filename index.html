@@ -112,9 +112,20 @@ firebase.auth();
     var firestore = firebase.firestore();
 
 
+    var mensaje1 = firebase.database().ref('/data/Lector/1');
+    var mensaje2 = firebase.database().ref('/data/Lector/2');
+    var mensaje3 = firebase.database().ref('/data/Lector/3');
+
+    var globalCount =0;
 
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
+            populateDivs(mensaje1,globalCount);
+            globalCount++;
+            populateDivs(mensaje2,globalCount);
+            globalCount++;
+            populateDivs(mensaje3,globalCount);
+            globalCount++;
             // User is signed in.
             $(".logIn").removeClass("show");
             $(".logIn").addClass("hide");
@@ -274,14 +285,10 @@ firebase.auth();
         $('.line .cantidad').text(snapshot.child("temp").val());
     });*/
 
-    var contador = 1;
-
-    var mensaje1 = firebase.database().ref('/data/Lector/1');
-    var mensaje2 = firebase.database().ref('/data/Lector/2');
-    var mensaje3 = firebase.database().ref('/data/Lector/3');
 
 
-    mensaje1.on('value', function (snapshot) {
+function populateDivs(mensaje,contador){
+    mensaje.on('value', function (snapshot) {
         var codigoClinica = parseInt(snapshot.child('clinica').val());
         var codigoSubtipo = parseInt(snapshot.child('subtipo').val());
         var codigoNombre = parseInt(snapshot.child('nombre').val());
@@ -308,12 +315,14 @@ firebase.auth();
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
                 $("#"+(contador-1)+" .clinica").text(clinica);
+                console.log("#"+contador);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
                 $("#"+(contador-1)+" .subtipo").text(subtipo);
+                console.log("#"+contador);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
@@ -323,122 +332,10 @@ firebase.auth();
             });
 
             contador=contador+1;
-
-            var reset = "";
-            firebase.database().ref('/data/Lector/1').set({
-                cantidad: reset,
-                clinica: reset,
-                nombre: reset,
-                subtipo: reset
-            });
-        }
+        };
     });
-
-    mensaje2.on('value', function (snapshot) {
-        var codigoClinica = parseInt(snapshot.child('clinica').val());
-        var codigoSubtipo = parseInt(snapshot.child('subtipo').val());
-        var codigoNombre = parseInt(snapshot.child('nombre').val());
-        var cantidad = snapshot.child('cantidad').val();
-
-        if (isNaN(codigoClinica)) {
-            console.log('Mensaje Vacio')
-        } else {
-            console.log(codigoClinica);
-            console.log(codigoSubtipo);
-            console.log(codigoNombre);
-
-            var dict = firestore.collection('diccionario');
-            var clinica;
-            var subtipo;
-            var nombre;
-
-            console.log('contador: ' + contador);
-
-            $('.bubbleLayout').append('<div id="'+contador+'" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
-
-            dict.doc('clinica').get().then(function (doc) {
-                const data = Object.values(doc.data());
-                console.log(data[codigoClinica]);
-                clinica = data[codigoClinica];
-                $("#"+(contador-1)+" .clinica").text(clinica);
-            });
-            dict.doc('subtipo').get().then(function (doc) {
-                const data = Object.values(doc.data());
-                console.log(data[codigoSubtipo]);
-                subtipo = data[codigoSubtipo];
-                $("#"+(contador-1)+" .subtipo").text(subtipo);
-            });
-            dict.doc('nombre').get().then(function (doc) {
-                const data = Object.values(doc.data());
-                console.log(data[codigoNombre]);
-                nombre = data[codigoNombre];
-                $("#"+(contador-1)+" .nombre").text(nombre);
-            });
-
-            contador=contador+1;
-
-            var reset = "";
-            firebase.database().ref('/data/Lector/2').set({
-                cantidad: reset,
-                clinica: reset,
-                nombre: reset,
-                subtipo: reset
-            });
-        }      
-    });
-
-    mensaje3.on('value', function (snapshot) {
-        var codigoClinica = parseInt(snapshot.child('clinica').val());
-        var codigoSubtipo = parseInt(snapshot.child('subtipo').val());
-        var codigoNombre = parseInt(snapshot.child('nombre').val());
-        var cantidad = snapshot.child('cantidad').val();
-
-        if (isNaN(codigoClinica)) {
-            console.log('Mensaje Vacio')
-        } else {
-            console.log(codigoClinica);
-            console.log(codigoSubtipo);
-            console.log(codigoNombre);
-
-            var dict = firestore.collection('diccionario');
-            var clinica;
-            var subtipo;
-            var nombre;
-
-            console.log('contador: ' + contador);
-
-            $('.bubbleLayout').append('<div id="'+contador+'" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
-
-            dict.doc('clinica').get().then(function (doc) {
-                const data = Object.values(doc.data());
-                console.log(data[codigoClinica]);
-                clinica = data[codigoClinica];
-                $("#"+(contador-1)+" .clinica").text(clinica);
-            });
-            dict.doc('subtipo').get().then(function (doc) {
-                const data = Object.values(doc.data());
-                console.log(data[codigoSubtipo]);
-                subtipo = data[codigoSubtipo];
-                $("#"+(contador-1)+" .subtipo").text(subtipo);
-            });
-            dict.doc('nombre').get().then(function (doc) {
-                const data = Object.values(doc.data());
-                console.log(data[codigoNombre]);
-                nombre = data[codigoNombre];
-                $("#"+(contador-1)+" .nombre").text(nombre);
-            });
-            
-            contador=contador+1;
-
-            var reset = "";
-            firebase.database().ref('/data/Lector/3').set({
-                cantidad: reset,
-                clinica: reset,
-                nombre: reset,
-                subtipo: reset
-            });
-        }
-    });
+    globalCount++;
+};
 
     /*var valRecibido = firebase.database().ref('/data/Lector');
 
