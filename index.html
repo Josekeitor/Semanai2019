@@ -323,6 +323,14 @@ firebase.auth();
             });
 
             contador=contador+1;
+
+            var reset = "";
+            firebase.database().ref('/data/Lector/1').set({
+                cantidad: reset,
+                clinica: reset,
+                nombre: reset,
+                subtipo: reset
+            });
         }
     });
 
@@ -368,6 +376,14 @@ firebase.auth();
             });
 
             contador=contador+1;
+
+            var reset = "";
+            firebase.database().ref('/data/Lector/2').set({
+                cantidad: reset,
+                clinica: reset,
+                nombre: reset,
+                subtipo: reset
+            });
         }      
     });
 
@@ -413,6 +429,14 @@ firebase.auth();
             });
             
             contador=contador+1;
+
+            var reset = "";
+            firebase.database().ref('/data/Lector/3').set({
+                cantidad: reset,
+                clinica: reset,
+                nombre: reset,
+                subtipo: reset
+            });
         }
     });
 
