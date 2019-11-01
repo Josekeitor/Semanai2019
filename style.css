@@ -178,6 +178,9 @@ header div{
 .profile-view{
     flex-flow: column;
 }
+.profile-view header div{
+    margin-right: 19vw;
+}
 .profile-stack{
     display: flex;
     flex-flow: column;

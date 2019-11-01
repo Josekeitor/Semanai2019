@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Aaron</title>
+    <title>Systema</title>
     <link href="style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <script src="jquery-3.4.1.min.js"></script>
@@ -37,8 +37,7 @@
     <div class="categorias hide" id="medicamentos">
         <header>
             <img class="logoHeader" src="imagenes/LogoHeader.png">
-            <div class="selected med-tab">Medicamentos</div>
-            <div class="insumos-tab">Insumos</div>
+            <div class="selected med-tab">Clínicas</div>
             <img class="profile" src="imagenes/profile.png">
         </header>
 
@@ -47,34 +46,18 @@
         </div>
     </div>
 
-    <div class="categorias hide" id="insumos">
-        <header>
-            <img class="logoHeader" src="imagenes/LogoHeader.png">
-            <div class="med-tab">Medicamentos</div>
-            <div class="insumos-tab selected">Insumos</div>
-            <img class="profile" src="imagenes/profile.png">
-        </header>
-        <div class="bubbleLayout">
-            <div class="line">
-                <txt class="categoria">Insumo</txt>
-                <txt class="tipo">Nombre</txt>
-                <txt class="subtipo">Subtipo</txt>
-                <txt class="cantidad">Hola</txt>
-            </div>
-
-        </div>
-    </div>
 
     <div class="profile-view categorias hide">
         <header>
             <img class="logoHeader" src="imagenes/LogoHeader.png">
-            <div class="med-tab">Medicamentos</div>
-            <div class="insumos-tab">Insumos</div>
+            <div class="med-tab">Clínicas</div>
         </header>
 
         <div class="profile-stack">
             <img id="profile-pic" src="imagenes/profile-black.png">
-            <txt>Nombre:</txt>
+            <txt id="profile-name">Nombre:</txt>
+            <txt id="profile-email">Correo: </txt>
+            <button id="salir">Salir</button>
 
         </div>
     </div>
@@ -137,6 +120,20 @@ firebase.auth();
             $(".logIn").addClass("hide");
             $("#medicamentos").removeClass("hide");
             $("#medicamentos").addClass("show");
+            var userAuth =firebase.auth().currentUser;
+            var name = "Name";
+
+
+             firestore.collection('usuarios').doc(userAuth.uid).get().then(function(doc){
+                const data = Object.values(doc.data());
+
+                 userName = data[1];
+                 userEmail =data[0];
+                 $("#profile-name").text("Nombre: "+userName);
+                    $("#profile-email").text("Correo: "+userEmail);
+            });
+
+
         } else {
             // No user is signed in.
             $("#registro").on('click', function () {
@@ -171,23 +168,32 @@ firebase.auth();
 
                 var email = $("#email").val();
                 var password = $("#pass").val();
+                var nombre = $("#nombre").val() +" "+$("#apellidos").val();
+
                 var userAuth;
-                firebase.auth().createUserWithEmailAndPassword(email, password);
-                userAuth = firebase.auth().currentUser;
-                console.log(userAuth);
-                console.log(userAuth.uid);
-                console.log(userAuth.email);
-                var user = {
-                    name: $("#nombre").val(),
-                    lastName: $("#apellidos").val(),
-                    email: email,
-                };
-                firestore.collection('usuarios').add(user).then(function () {
+                firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+                    userAuth = firebase.auth().currentUser;
+                    console.log(userAuth.uid);
+
+                    user = {
+                      Name: nombre,
+                      Email: email
+                    };
+                    firestore.collection('usuarios').doc(userAuth.uid).set(user);
+                    userName = firestore.collection('usuarios').doc(userAuth.uid).get("Name").toString();
+                    userEmail = firestore.collection('usuarios').doc(userAuth.uid).get("Email").toString();
+                    console.log(userName);
+                    $("#profile-name").text("Nombre: "+userName);
+                    $("#profile-email").text("Correo: "+userEmail);
                     $("#pag-registro").removeClass("show");
                     $("#pag-registro").addClass("hide");
                     $("#medicamentos").removeClass("hide");
                     $("#medicamentos").addClass("show");
+
+
                 });
+
+
             });
         }
     });
@@ -226,13 +232,12 @@ firebase.auth();
         });
     });
 
-    $("#registrar").on('click', function () {
+
+
+   /* $("#registrar").on('click', function () {
 
         var email = $("#email").val();
         var password = $("#pass").val();
-        console.log(email);
-        console.log(password);
-        console.log("hola");
 
         firebase.auth().createUserWithEmailAndPassword(email, password).then(function () {
             $("#pag-registro").removeClass("show");
@@ -242,10 +247,18 @@ firebase.auth();
         });
 
     });
+    */
     $(".categorias .profile").on('click', function () {
         $("#medicamentos").removeClass("show").addClass("hide");
         $("#insumos").removeClass("show").addClass("hide");
         $(".profile-view ").removeClass("hide").addClass("show");
+    });
+
+    $("#salir").on('click',function(){
+        firebase.auth().signOut().then(function(){
+           $(".profile-view").removeClass("show").addClass("hide");
+            $(".logIn").removeClass("hide").addClass("show");
+        });
     });
 
 
@@ -283,21 +296,26 @@ firebase.auth();
             var clinica;
             var subtipo;
             var nombre;
+            $('.bubbleLayout').append('<div id="1" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
+
 
             dict.doc('clinica').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
+                $("#1 .clinica").text(clinica);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
+                $("#1 .subtipo").text(subtipo);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoNombre]);
                 nombre = data[codigoNombre];
+                $("#1 .nombre").text(nombre);
             });
 
             /*$('.bubbleLayout').append('
@@ -309,9 +327,6 @@ firebase.auth();
                                         </div>
                                         ');*/
 
-            $('.bubbleLayout').append('<div class="line"><txt class="clinica">' + clinica +
-                '</txt><txt class="subtipo">' + subtipo + '</txt><txt class="nombre">' + nombre +
-                '</txt><txt class="cantidad">' + cantidad + '</txt></div>');
         }
 
     });
@@ -333,20 +348,28 @@ firebase.auth();
             var subtipo;
             var nombre;
 
+            $('.bubbleLayout').append('<div id="2" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
+
+
             dict.doc('clinica').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
+                $("#2 .clinica").text(clinica);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
+                $("#2 .subtipo").text(subtipo);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoNombre]);
                 nombre = data[codigoNombre];
+                console.log("nombre dentro: "+ nombre);
+                $("#2 .nombre").text(nombre);
+
             });
 
             /*$('.bubbleLayout').append('
@@ -358,9 +381,8 @@ firebase.auth();
                                         </div>
                                         ');*/
 
-            $('.bubbleLayout').append('<div class="line"><txt class="clinica">' + clinica +
-                '</txt><txt class="subtipo">' + subtipo + '</txt><txt class="nombre">' + nombre +
-                '</txt><txt class="cantidad">' + cantidad + '</txt></div>');
+
+            console.log("nombre fuera: "+ nombre);
         }
 
     });
@@ -382,20 +404,25 @@ firebase.auth();
             var subtipo;
             var nombre;
 
+            $('.bubbleLayout').append('<div id="3" class="line"><txt class="clinica"></txt><txt class="subtipo"></txt><txt class="nombre"></txt><txt class="cantidad">'+cantidad+'</txt></div>');
+
             dict.doc('clinica').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoClinica]);
                 clinica = data[codigoClinica];
+                $("#3 .clinica").text(clinica);
             });
             dict.doc('subtipo').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoSubtipo]);
                 subtipo = data[codigoSubtipo];
+                $("#3 .subtipo").text(subtipo);
             });
             dict.doc('nombre').get().then(function (doc) {
                 const data = Object.values(doc.data());
                 console.log(data[codigoNombre]);
                 nombre = data[codigoNombre];
+                $("#3 .nombre").text(nombre);
             });
 
             /*$('.bubbleLayout').append('
@@ -406,10 +433,6 @@ firebase.auth();
                                             <txt class="cantidad">${cantidad}</txt>
                                         </div>
                                         ');*/
-
-            $('.bubbleLayout').append('<div class="line"><txt class="clinica">' + clinica +
-                '</txt><txt class="subtipo">' + subtipo + '</txt><txt class="nombre">' + nombre +
-                '</txt><txt class="cantidad">' + cantidad + '</txt></div>');
         }
 
     });
