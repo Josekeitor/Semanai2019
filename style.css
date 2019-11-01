@@ -189,6 +189,13 @@ header div{
     margin-top: 3vh;
 }
 
+.profile-stack txt{
+    margin-top: 5vh;
+}
+.profile-stack button{
+    margin-top: 10vh;
+}
+
 .line{
     height: 10vh;
     display: flex;
